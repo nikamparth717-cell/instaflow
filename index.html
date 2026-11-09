@@ -1,0 +1,413 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d18">
+<title>InstaFlow | Creator Workspace</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Arial,sans-serif;background:#090d18;color:#f4f5fa;min-height:100vh}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:235px;background:#101625;border-right:1px solid #202a3c;padding:25px 16px;flex-shrink:0}
+.logo{font-size:25px;font-weight:800;margin:0 0 35px 10px;letter-spacing:-1px}
+.logo span{color:#9c7bff}
+.nav-label{font-size:11px;color:#78849a;margin:22px 10px 10px;text-transform:uppercase;letter-spacing:1px}
+.nav button{display:block;width:100%;text-align:left;background:transparent;color:#aab4c7;border:0;padding:12px;border-radius:9px;margin:4px 0;font-size:14px}
+.nav button.active,.nav button:hover{background:#242b42;color:white}
+.main{flex:1;min-width:0;padding:30px;max-width:1400px;margin:auto;width:100%}
+.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:30px}
+.top h1{font-size:27px}
+.sub{color:#8994a8;font-size:13px;margin-top:7px}
+.profile{background:#202a3c;border-radius:30px;padding:10px 15px;font-size:13px}
+.mobile-menu{display:none;background:#202a3c;border:0;color:white;padding:10px;border-radius:8px}
+.section{display:none}
+.section.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}
+.card{background:#121b2b;border:1px solid #263249;border-radius:14px;padding:20px;margin-bottom:16px}
+.stat-title{color:#8994a8;font-size:13px}
+.stat-value{font-size:27px;font-weight:750;margin-top:12px}
+.stat-note{color:#9c7bff;font-size:12px;margin-top:7px}
+.heading{font-size:19px;margin-bottom:16px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.btn{background:#8b6cff;color:white;border:0;padding:11px 16px;border-radius:9px;font-weight:650}
+.btn:hover{background:#a18aff}
+.btn.secondary{background:#253149;color:#e5e9f4}
+.btn.danger{background:#542b3b;color:#ffb6c6}
+.field{width:100%;background:#0c1422;color:white;border:1px solid #303d55;padding:12px;border-radius:9px;margin:8px 0 14px;outline:none}
+.field:focus{border-color:#9c7bff}
+label{font-size:13px;color:#bac3d2}
+textarea.field{min-height:110px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.item{padding:14px 0;border-bottom:1px solid #273248}
+.item:last-child{border:0}
+.muted{color:#8994a8;font-size:13px}
+.tag{display:inline-block;background:#292442;color:#c5b6ff;border-radius:20px;padding:5px 9px;font-size:11px;margin:3px}
+.empty{color:#8994a8;text-align:center;padding:28px}
+.output{white-space:pre-wrap;background:#0b1320;border:1px solid #29344a;padding:15px;border-radius:10px;line-height:1.6;margin-top:12px;font-size:14px}
+.post{background:#182338;border-radius:10px;padding:14px;margin:10px 0}
+.post strong{display:block;margin-bottom:6px}
+.footer{color:#68758b;font-size:11px;margin-top:30px;text-align:center}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){
+ .app{display:block}
+ .sidebar{display:none;width:100%;padding:15px}
+ .sidebar.open{display:block}
+ .main{padding:19px 14px}
+ .mobile-menu{display:block}
+ .top h1{font-size:22px}
+ .two{grid-template-columns:1fr}
+ .grid{gap:9px}
+ .card{padding:15px}
+ .stat-value{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo">Insta<span>Flow.</span></div>
+  <div class="nav">
+    <div class="nav-label">Workspace</div>
+    <button class="active" data-page="dashboard">▦ Dashboard</button>
+    <button data-page="ideas">✦ Content Ideas</button>
+    <button data-page="planner">▤ Content Planner</button>
+    <div class="nav-label">Creator Tools</div>
+    <button data-page="hashtags"># Hashtag Generator</button>
+    <button data-page="scripts">✎ Script Writer</button>
+    <button data-page="income">₹ Income Tracker</button>
+  </div>
+  <div class="footer">INSTAFLOW • CREATOR WORKSPACE</div>
+</aside>
+
+<main class="main">
+  <header class="top">
+    <div class="row">
+      <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+      <div>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p class="sub">Your creator workspace, all in one place.</p>
+      </div>
+    </div>
+    <div class="profile">✦ Creator</div>
+  </header>
+
+  <section class="section active" id="dashboard">
+    <div class="grid">
+      <div class="card"><div class="stat-title">Planned Posts</div><div class="stat-value" id="statPosts">0</div><div class="stat-note">Your content pipeline</div></div>
+      <div class="card"><div class="stat-title">Content Ideas</div><div class="stat-value">∞</div><div class="stat-note">Start creating today</div></div>
+      <div class="card"><div class="stat-title">Hashtag Tool</div><div class="stat-value">Ready</div><div class="stat-note">Generate hashtag ideas</div></div>
+      <div class="card"><div class="stat-title">Income Tracked</div><div class="stat-value" id="statIncome">₹0</div><div class="stat-note">Your recorded earnings</div></div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <div class="row"><h2 class="heading">Welcome to InstaFlow</h2><span class="tag">BETA</span></div>
+        <p class="muted">Plan your content, explore ideas, write scripts and organise your creator business.</p>
+        <br>
+        <button class="btn" onclick="showPage('ideas')">Explore content ideas →</button>
+      </div>
+      <div class="card">
+        <h2 class="heading">Quick actions</h2>
+        <button class="btn secondary" onclick="showPage('planner')">＋ Plan a post</button>
+        <button class="btn secondary" onclick="showPage('hashtags')"># Generate hashtags</button>
+        <button class="btn secondary" onclick="showPage('scripts')">✎ Write a script</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="heading">Upcoming content</h2>
+      <div id="dashboardPosts" class="empty">No posts planned yet. Create your first one!</div>
+    </div>
+  </section>
+
+  <section class="section" id="ideas">
+    <div class="card">
+      <h2 class="heading">✦ Content Idea Generator</h2>
+      <p class="muted">Get starter ideas for your next post or reel.</p>
+      <label>Your creator niche</label>
+      <select class="field" id="niche">
+        <option value="fitness">Fitness</option>
+        <option value="education">Education</option>
+        <option value="fashion">Fashion</option>
+        <option value="technology">Technology</option>
+        <option value="food">Food</option>
+        <option value="travel">Travel</option>
+        <option value="lifestyle">Lifestyle</option>
+      </select>
+      <button class="btn" onclick="generateIdeas()">Generate ideas</button>
+      <div id="ideasOutput"></div>
+    </div>
+  </section>
+
+  <section class="section" id="planner">
+    <div class="card">
+      <h2 class="heading">▤ Content Planner</h2>
+      <label>Post or reel title</label>
+      <input class="field" id="postTitle" placeholder="Example: 5 tips for beginners">
+      <label>Content type</label>
+      <select class="field" id="postType">
+        <option>Instagram Reel</option>
+        <option>Carousel</option>
+        <option>Story</option>
+        <option>Photo Post</option>
+      </select>
+      <label>Planned date</label>
+      <input class="field" type="date" id="postDate">
+      <label>Notes</label>
+      <textarea class="field" id="postNotes" placeholder="Caption, ideas or reminders..."></textarea>
+      <button class="btn" onclick="addPost()">＋ Add to planner</button>
+    </div>
+    <div class="card">
+      <h2 class="heading">Your planned content</h2>
+      <div id="postList" class="empty">Your content calendar is empty.</div>
+    </div>
+  </section>
+
+  <section class="section" id="hashtags">
+    <div class="card">
+      <h2 class="heading"># Hashtag Generator</h2>
+      <p class="muted">Enter your topic to generate relevant hashtag suggestions.</p>
+      <label>Post topic</label>
+      <input class="field" id="hashTopic" placeholder="Example: beginner fitness workout">
+      <button class="btn" onclick="generateHashtags()">Generate hashtags</button>
+      <div id="hashOutput"></div>
+    </div>
+  </section>
+
+  <section class="section" id="scripts">
+    <div class="card">
+      <h2 class="heading">✎ Reel Script Writer</h2>
+      <p class="muted">Create a simple reel script structure from your topic.</p>
+      <label>What is your reel about?</label>
+      <input class="field" id="scriptTopic" placeholder="Example: How to study effectively">
+      <label>Video duration</label>
+      <select class="field" id="scriptDuration">
+        <option value="15">15 seconds</option>
+        <option value="30">30 seconds</option>
+        <option value="45">45 seconds</option>
+        <option value="60">60 seconds</option>
+      </select>
+      <button class="btn" onclick="generateScript()">Create script</button>
+      <div id="scriptOutput"></div>
+    </div>
+  </section>
+
+  <section class="section" id="income">
+    <div class="card">
+      <h2 class="heading">₹ Creator Income Tracker</h2>
+      <label>Income source</label>
+      <input class="field" id="incomeSource" placeholder="Example: Brand collaboration">
+      <label>Amount (₹)</label>
+      <input class="field" id="incomeAmount" type="number" min="0" placeholder="Example: 5000">
+      <button class="btn" onclick="addIncome()">＋ Add income</button>
+    </div>
+    <div class="card">
+      <h2 class="heading">Your earnings</h2>
+      <div class="stat-value" id="totalIncome">₹0</div>
+      <div id="incomeList" class="empty">No income entries yet.</div>
+    </div>
+  </section>
+
+  <div class="footer">InstaFlow is currently a prototype. Your data is stored in this browser.</div>
+</main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function load(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch { return fallback; }
+}
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+let posts = load("if_posts", []);
+let incomes = load("if_income", []);
+
+function toggleMenu() {
+  $("sidebar").classList.toggle("open");
+}
+
+function showPage(page) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+  $(page).classList.add("active");
+  const button = document.querySelector('[data-page="'+page+'"]');
+  if(button) button.classList.add("active");
+  $("pageTitle").textContent = button ? button.textContent.trim().replace(/^[^a-zA-Z₹#✦▤✎]+/,"") : "Dashboard";
+  $("sidebar").classList.remove("open");
+  if(page==="dashboard") renderDashboard();
+  if(page==="planner") renderPosts();
+  if(page==="income") renderIncome();
+}
+
+document.querySelectorAll(".nav button").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+function renderDashboard() {
+  $("statPosts").textContent = posts.length;
+  const total = incomes.reduce((sum,item)=>sum+item.amount,0);
+  $("statIncome").textContent = "₹"+total.toLocaleString("en-IN");
+  $("dashboardPosts").innerHTML = posts.length
+    ? posts.slice(0,4).map(p=>'<div class="item"><strong>'+escapeHTML(p.title)+'</strong><span class="muted">'+escapeHTML(p.type)+' • '+escapeHTML(p.date || "No date")+'</span></div>').join("")
+    : '<div class="empty">No posts planned yet. Create your first one!</div>';
+}
+
+function renderPosts() {
+  $("postList").innerHTML = posts.length ? posts.map((p,i)=>`
+    <div class="post">
+      <strong>${escapeHTML(p.title)}</strong>
+      <span class="muted">${escapeHTML(p.type)} • ${escapeHTML(p.date || "No date")}</span>
+      <p class="muted">${escapeHTML(p.notes || "")}</p>
+      <br><button class="btn danger" onclick="deletePost(${i})">Delete</button>
+    </div>`).join("") : '<div class="empty">Your content calendar is empty.</div>';
+}
+
+function addPost() {
+  const title = $("postTitle").value.trim();
+  if(!title) return alert("Enter a post title first.");
+  posts.unshift({
+    title,
+    type:$("postType").value,
+    date:$("postDate").value,
+    notes:$("postNotes").value.trim()
+  });
+  save("if_posts",posts);
+  $("postTitle").value="";
+  $("postNotes").value="";
+  renderPosts();
+  renderDashboard();
+  alert("Post added to your planner!");
+}
+
+function deletePost(i) {
+  posts.splice(i,1);
+  save("if_posts",posts);
+  renderPosts();
+  renderDashboard();
+}
+
+const ideaBank = {
+ fitness:["A beginner's workout routine","3 common fitness mistakes","What I eat in a day","Myth vs fact: fitness","A simple home workout"],
+ education:["How I organise my study day","3 study mistakes to avoid","A difficult topic explained simply","My exam preparation routine","Useful free study resources"],
+ fashion:["3 ways to style one outfit","Wardrobe essentials","Casual outfit inspiration","Common styling mistakes","How to build a simple wardrobe"],
+ technology:["Useful apps you should know","Tech myths explained","A beginner's guide to AI","My favourite productivity tools","Technology explained simply"],
+ food:["An easy recipe in 30 seconds","Budget-friendly meal ideas","A food combination to try","Kitchen tips that save time","My favourite homemade snack"],
+ travel:["A hidden place worth exploring","How to plan a budget trip","Things to pack for a trip","A day in my city","Travel mistakes beginners make"],
+ lifestyle:["My morning routine","Habits I'm trying to build","A productive day in my life","Things I wish I knew earlier","A simple weekly reset"]
+};
+
+function generateIdeas() {
+  const niche = $("niche").value;
+  const ideas = ideaBank[niche].slice().sort(()=>Math.random()-.5);
+  $("ideasOutput").innerHTML = '<div class="output">'+ideas.map((x,i)=>(i+1)+". "+x).join("\n\n")+'</div>';
+}
+
+function generateHashtags() {
+  const topic = $("hashTopic").value.trim().toLowerCase();
+  if(!topic) return alert("Enter a topic first.");
+  const words = topic.split(/[^a-z0-9]+/).filter(Boolean);
+  const tags = [...new Set([
+    ...words,
+    words.join(""),
+    "contentcreator",
+    "creatortips",
+    "instagramtips",
+    "reelsindia",
+    "digitalcreator",
+    "contentstrategy",
+    "creatorcommunity",
+    "learnandgrow"
+  ])].filter(Boolean).map(w=>"#"+w);
+  $("hashOutput").innerHTML = '<div class="output" id="hashResult">'+tags.join(" ")+'</div><br><button class="btn secondary" onclick="copyText(\'hashResult\')">Copy hashtags</button>';
+}
+
+function generateScript() {
+  const topic = $("scriptTopic").value.trim();
+  const duration = Number($("scriptDuration").value);
+  if(!topic) return alert("Enter your reel topic first.");
+  const script = `REEL TOPIC: ${topic}
+
+1. HOOK (First 3 seconds)
+"Want to know something important about ${topic}?"
+
+2. INTRODUCTION
+"Most people overlook this, but understanding it can make a difference."
+
+3. MAIN CONTENT
+• Introduce the main idea.
+• Explain 2 or 3 useful points.
+• Give a simple real-world example.
+
+4. ENDING
+"Try this and share your experience in the comments."
+
+5. CALL TO ACTION
+"Follow for more useful content."
+
+Suggested duration: ${duration} seconds.
+
+CREATOR NOTE:
+Replace the sample lines with your own researched facts and natural speaking style.`;
+  $("scriptOutput").innerHTML = '<div class="output" id="scriptResult">'+escapeHTML(script)+'</div><br><button class="btn secondary" onclick="copyText(\'scriptResult\')">Copy script</button>';
+}
+
+function addIncome() {
+  const source = $("incomeSource").value.trim();
+  const amount = Number($("incomeAmount").value);
+  if(!source || !Number.isFinite(amount) || amount<=0) return alert("Enter a valid source and amount.");
+  incomes.unshift({source,amount});
+  save("if_income",incomes);
+  $("incomeSource").value="";
+  $("incomeAmount").value="";
+  renderIncome();
+  renderDashboard();
+}
+
+function renderIncome() {
+  const total = incomes.reduce((sum,item)=>sum+item.amount,0);
+  $("totalIncome").textContent="₹"+total.toLocaleString("en-IN");
+  $("incomeList").innerHTML=incomes.length ? incomes.map((x,i)=>`
+    <div class="item row">
+      <div><strong>${escapeHTML(x.source)}</strong><div class="muted">Income entry</div></div>
+      <div><strong>₹${x.amount.toLocaleString("en-IN")}</strong><br><button class="btn danger" onclick="deleteIncome(${i})">Remove</button></div>
+    </div>`).join("") : '<div class="empty">No income entries yet.</div>';
+}
+
+function deleteIncome(i) {
+  incomes.splice(i,1);
+  save("if_income",incomes);
+  renderIncome();
+  renderDashboard();
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function copyText(id) {
+  const text = $(id).innerText;
+  if(navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(()=>alert("Copied!")).catch(()=>alert("Copy wasn't available. Select the text manually."));
+  } else {
+    alert("Clipboard isn't available here. Select and copy the text manually.");
+  }
+}
+
+renderDashboard();
+renderPosts();
+renderIncome();
+</script>
+</body>
+</html>
